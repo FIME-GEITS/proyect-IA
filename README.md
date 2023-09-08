@@ -11,29 +11,12 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
 
 2. Clone this repository
 
-3. Navigate into the project directory
-
-   ```bash
-   $ cd openai-quickstart-node
-   ```
-
 4. Install the requirements
 
    ```bash
    $ npm install
    ```
 
-5. Make a copy of the example environment variables file
-
-   On Linux systems: 
-   ```bash
-   $ cp .env.example .env
-   ```
-   On Windows:
-   ```powershell
-   $ copy .env.example .env
-   ```
-6. Add your [API key](https://platform.openai.com/account/api-keys) to the newly created `.env` file
 
 7. Run the app
 
