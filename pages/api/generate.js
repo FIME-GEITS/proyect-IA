@@ -15,11 +15,14 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const next = req.body.next || '';
+  const gender = req.body.gender || '';
+  const author = req.body.author || '';
+  
+  if (next.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Por favor ingrese una entrada valida",
       }
     });
     return;
@@ -28,12 +31,11 @@ export default async function (req, res) {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
+      prompt: generatePrompt(next,gender,author),
       temperature: 0.6,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
-    // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -48,8 +50,9 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Sugiereme libros de la biblioteca del genero ${capitalizedAnimal}`;
+function generatePrompt(next,gender,author) {
+  const capitalizedNext = next[0].toUpperCase() + next.slice(1).toLowerCase();
+  const capitalizedGender = gender[0].toUpperCase() + gender.slice(1).toLowerCase();
+  const capitalizedAuthor = author[0].toUpperCase() + author.slice(1).toLowerCase();
+  return `Sugiéreme libros de la biblioteca del genero ${capitalizedGender} que traten sobre ${capitalizedNext} y que esten escritos por ${capitalizedAuthor}`;
 }
