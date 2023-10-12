@@ -2,6 +2,7 @@ import React from 'react';
 
 const BookInputComponent = ({ placeholder, value, onChange }) => {
   return (
+    <>
     <input
     type="text"
     name="book"
@@ -9,6 +10,7 @@ const BookInputComponent = ({ placeholder, value, onChange }) => {
     value={value}
     onChange={onChange}
   />
+  </>
   );
 };
 
