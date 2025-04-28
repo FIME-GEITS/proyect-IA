@@ -83,3 +83,39 @@
   display: flex;
   align-items: center;
 }
+.nextBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  padding: 0;
+}
+
+.nextBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 600px;
+  text-align: left;
+}
+
+.card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  margin: 0.5rem 0;
+}
+
+.cover {
+  display: block;
+  margin: 1rem auto 0;
+  max-width: 100%;
+  border-radius: 8px;
+}
