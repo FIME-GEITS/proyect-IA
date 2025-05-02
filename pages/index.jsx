@@ -1,6 +1,5 @@
-// pages/index.js
 import Head from 'next/head'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import BookInputComponent from './components/BookInputComponent'
 import styles from './index.module.css'
 import 'animate.css'
@@ -11,6 +10,25 @@ export default function Home() {
   const [authorBook, setAuthorBook] = useState('')
   const [step, setStep] = useState(1)
   const [result, setResult] = useState(null)
+  const [randomBooks, setRandomBooks] = useState([])
+
+  useEffect(() => {
+    const fetchRandomBooks = async () => {
+      try {
+        const res = await fetch('/api/randomBooks');
+        const data = await res.json();
+        if (res.status === 200) {
+          setRandomBooks(data.books);
+        } else {
+          console.error('Failed to fetch random books');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchRandomBooks();
+  }, []);
 
   const handleNext = () => {
     if (step === 1 && !nextBook) return
@@ -40,14 +58,14 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>BIB-IA</title>
-        <link rel="icon" href="/beardread.png" />
+        <title>FIMEBooks</title>
+        <link rel="icon" href="/beardread.png" />   
       </Head>
 
       <main className={styles.main}>
-        <span className="animate__animated animate__fadeInDown">
-          <img src="/beardread.png" className={styles.icon} alt="Logo BIB-IA" />
-          <h1 className={styles.title}>BIB-IA</h1>
+        <span className="animate__animated animate__fadeInDown animate__slow">
+          <img src="/beardread.png" className={styles.icon} alt="Logo FIMEBooks" />
+          <h1 className={styles.title}>FIMEBooks</h1>
         </span>
 
         <form onSubmit={onSubmit} className={styles.form}>
@@ -94,15 +112,42 @@ export default function Home() {
                 value={authorBook}
                 onChange={e => setAuthorBook(e.target.value)}
               />
-              <input
-                type="submit"
-                value="Genera mi próximo libro a leer"
-              />
+              <div className={styles.submitWrapper}>
+                <input
+                  type="submit"
+                  value="Genera mi próximo libro a leer"
+                  className={styles.submitBtn}
+                />
+              </div>
             </>
           )}
         </form>
 
-        {/* Tarjeta de resultado */}
+{!result && (
+  <>
+    <h2>Descubre tu próxima aventura literaria</h2>
+    <div className={styles.slider}>
+      <div 
+        className={styles.slideTrack}
+        style={{ '--total-slides': randomBooks.length * 2 }} // 2 copias
+      >
+        {randomBooks.length > 0 ? (
+          [...randomBooks, ...randomBooks].map((book, index) => (
+            <div key={`${index}-${book.title}`} className={styles.slide}>
+              <img
+                src={book.imageLink}
+                alt={`Portada de ${book.title}`}
+                className={styles.cover}
+              />
+            </div>
+          ))
+        ) : (
+          <p>Cargando libros aleatorios...</p>
+        )}
+      </div>
+    </div>
+  </>
+)}
         {result && typeof result === 'object' && (
           <div className={styles.card}>
             <h2>{result.titulo}</h2>
